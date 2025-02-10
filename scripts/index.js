@@ -1,7 +1,7 @@
 const movieResultsElement = document.getElementById("movie-results")
 const searchInput = document.getElementById("search-input")
 const searchBtn = document.getElementById("search-btn")
-let movieResults = []
+
 
 
 // Prompt to use search
@@ -31,7 +31,11 @@ function renderLoadingMessage() {
 
 function searchMovieDatabase() {
     renderLoadingMessage()
-    fetch(`https://www.omdbapi.com/?apikey=863d41df&s=${searchInput.value}&type=movie`)
+    let requestUrl = `https://www.omdbapi.com/?apikey=863d41df&type=movie`
+    if (searchInput.value) {
+        requestUrl = `https://www.omdbapi.com/?apikey=863d41df&s=${searchInput.value}&type=movie`
+    }
+    fetch(requestUrl)
         .then(response => response.json())
         .then(data => {
             if (data.Response === "False") {
@@ -56,10 +60,10 @@ function getMovieDetails(moviesArr) {
     })
     Promise.all(requests)
         .then(responses => {
-            movieResults = responses.filter((movie) => {
+            const movieResults = responses.filter((movie) => {
                 return movie.Title !== "N/A" && movie.Poster !== "N/A"
             })
-            renderMovieResults()
+            renderMovieResults(movieResults)
         })
 }
 
@@ -73,7 +77,7 @@ function getSavedMovies() {
     return movieWatchlist
 }
 
-function saveToWatchlist(filmID) {
+function saveToWatchlist(filmID, movieResults) {
 
     const movieWatchlist = getSavedMovies()
     const alreadyInWatchlist = movieWatchlist.find((movie) => {
@@ -92,7 +96,7 @@ function saveToWatchlist(filmID) {
 
 }
 
-function renderMovieResults() {
+function renderMovieResults(movieResults) {
 
     const addToWatchlistBtnInnerHtml = `<i class="fa-solid fa-circle-plus"></i> Watchlist `
     const alreadySavedBtnInnerHtml = `<i class="fa-solid fa-circle-check"></i> Added to Watchlist`
@@ -133,7 +137,7 @@ function renderMovieResults() {
     movieResultsElement.innerHTML = htmlString
     document.querySelectorAll("[data-add-button]").forEach(button => {
         button.addEventListener('click', () => {
-            saveToWatchlist(button.dataset.addId)
+            saveToWatchlist(button.dataset.addId, movieResults)
             button.innerHTML = alreadySavedBtnInnerHtml
         })
     })

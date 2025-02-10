@@ -1,11 +1,12 @@
 const watchlistResultsElement = document.getElementById("watchlist-results")
 const searchInput = document.getElementById("search-input")
 const searchBtn = document.getElementById("search-btn")
-let movieResults = JSON.parse(localStorage.getItem("Watchlist"))
+
 
 renderWatchlist()
 
 function renderWatchlist() {
+    const movieResults = JSON.parse(localStorage.getItem("Watchlist"))
     if (movieResults.length === 0) {
         watchlistResultsElement.innerHTML = ` 
         <div class="watchlist-placeholder"> 
@@ -15,21 +16,10 @@ function renderWatchlist() {
         </div>
     `
     } else {
-        renderWatchlistResults()
+        renderWatchlistResults(movieResults)
     }
 }
 
-
-function saveToWatchlist(filmID) {
-    const foundMovie = movieResults.find((movie) => {
-        return movie.imdbID === filmID
-    })
-
-    const moviesToSave = [foundMovie]
-    const savedMovies = JSON.stringify(moviesToSave)
-    localStorage.setItem("Watchlist", savedMovies)
-
-}
 
 function removeMovieFromLocal(filmID) {
     let movieWatchlist = []
@@ -44,14 +34,13 @@ function removeMovieFromLocal(filmID) {
     })
 
     movieWatchlist.splice(foundMovieIndex, 1)
-    console.log(movieWatchlist)
     const savedMovies = JSON.stringify(movieWatchlist)
     localStorage.setItem("Watchlist", savedMovies)
-    movieResults = JSON.parse(localStorage.getItem("Watchlist"))
+
     renderWatchlist()
 }
 
-function renderWatchlistResults() {
+function renderWatchlistResults(movieResults) {
     let htmlString = ""
     movieResults.forEach(data => {
         htmlString += `
@@ -67,7 +56,7 @@ function renderWatchlistResults() {
                         <div class="small-detail">
                             <p> ${data.Runtime === "N/A" ? "Runtime unavailable" : data.Runtime} </p>
                             <p> ${data.Genre === "N/A" ? "Genre unavailable" : data.Genre} </p>
-                            <button data-add-button data-add-id="${data.imdbID}" class="remove-btn"> <i class="fa-solid fa-circle-minus"> </i> Remove </button>
+                            <button data-remove-button data-remove-id="${data.imdbID}" class="remove-btn"> <i class="fa-solid fa-circle-minus"> </i> Remove </button>
                         </div>
                         <div class="about-detail"> 
                             <p>${data.Plot === "N/A" ? "No description available" : data.Plot}</p> 
@@ -77,7 +66,7 @@ function renderWatchlistResults() {
                 `
     })
     watchlistResultsElement.innerHTML = htmlString
-    document.querySelectorAll("[data-add-button]").forEach(button => {
-        button.addEventListener('click', () => removeMovieFromLocal(button.dataset.addId))
+    document.querySelectorAll("[data-remove-button]").forEach(button => {
+        button.addEventListener('click', () => removeMovieFromLocal(button.dataset.removeId))
     })
 }
