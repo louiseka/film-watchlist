@@ -8,9 +8,9 @@
 🌐 **Live Site:** https://louiseka.github.io/film-watchlist/
 
 ## What is the Movie Watchlist?
-**Movie Watchlist** is a web application that leverages the **Open Movie Database (OMDb) API** to let users search for films they want to watch.  
+Movie Watchlist is a web application that leverages the **Open Movie Database (OMDb) API** to let users search for films they want to watch.  
 
-Users can **add films to a watchlist** or remove them as needed, with all data saved to **localStorage**, ensuring their watchlist persists between sessions.
+Users can add films to a watchlist or remove them as needed, with all data saved to **localStorage**, ensuring their watchlist persists between sessions.
 
 ## Features
 - Search for movies via **OMDb API**  
@@ -30,7 +30,7 @@ Users can **add films to a watchlist** or remove them as needed, with all data s
 - Using `localStorage` to persist user data  
 
 ## Future Improvements
-- Add a **loading spinner** while waiting for search results  
+- Add a loading spinner while waiting for search results  
 - Enable removing movies from the watchlist directly via search results  
 
 ## Installation (Local Development)
@@ -38,10 +38,10 @@ To run the project locally:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/movie-watchlist.git
+git clone https://github.com/yourusername/film-watchlist.git
 
 # Navigate into the project directory
-cd movie-watchlist
+cd film-watchlist
 
 # Open the project
 open index.html
